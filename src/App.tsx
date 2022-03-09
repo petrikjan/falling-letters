@@ -41,19 +41,28 @@ function App(props: { setDuration: any; pause: boolean; duration: number }) {
       function removeLettersOutsideTrap(letter: string) {
         setLetters((newLetters) => {
           let newScore = 0;
+          let toDelete: Array<string> = [];
+
           Object.keys(letters).forEach(function (key, index) {
             if (
               letters[key].trap === false &&
               letters[key].letter.toUpperCase() === letter.toUpperCase()
             ) {
               newScore++;
-              delete newLetters[key];
+              toDelete.push(key);
             }
           });
 
-          setScore((prevScore) => {
-            return newScore + prevScore;
-          });
+          if (newScore > 1) {
+            // delete letters
+            toDelete.forEach((item) => {
+              delete newLetters[item];
+            });
+
+            setScore((prevScore) => {
+              return newScore + prevScore;
+            });
+          }
 
           return newLetters;
         });
